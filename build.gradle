@@ -1,0 +1,96 @@
+
+/**
+plugins {
+	id 'org.springframework.boot' version '2.4.3'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.van'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+	useJUnitPlatform()
+}
+*/
+buildscript {
+	repositories {
+		maven { url "http://maven.aliyun.com/repository/spring-plugin" }
+		maven { url "http://maven.aliyun.com/repository/gradle-plugin" }
+	}
+	dependencies {
+		classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.6'
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:2.0.0.RELEASE"
+	}
+}
+
+defaultTasks 'clean', 'bootJar'
+
+apply plugin: 'java-library'
+apply plugin: 'propdeps'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
+
+repositories {
+	mavenLocal()
+	maven { url "https://maven.aliyun.com/repository/public" }
+	maven { url "https://repo.spring.io/milestone" }
+}
+dependencyManagement {
+	imports {
+		mavenBom 'org.springframework.cloud:spring-cloud-zookeeper-dependencies:2.0.0.M7'
+		mavenBom 'org.springframework.cloud:spring-cloud-config:2.0.0.M9'
+	}
+}
+
+project.group = 'com.van'
+//project.version = '0.0.1'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileJava {
+	options.encoding = 'UTF-8'
+}
+
+
+springBoot {
+	buildInfo()
+}
+
+bootJar {
+	manifest {
+		attributes 'Implementation-Version': project.version
+		attributes 'Implementation-Title': project.name
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation "org.springframework.boot:spring-boot-starter-data-mongodb"
+	implementation 'org.apache.commons:commons-lang3'
+
+
+	implementation 'com.google.guava:guava:20.0'
+}
