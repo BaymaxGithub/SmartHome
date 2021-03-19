@@ -46,6 +46,13 @@ public class UserController {
         log.info("!!!!api/user accessToken:{} email:{},phone:{},userName:{}，password:{}"
                 ,email,phone,userName);
 
+        User userCheck = userDAO.getUserByField(dbName,"email",email);
+        if (userCheck!=null){
+            Map map = new HashMap();
+            map.put("error","用户已经存在，请直接登录。");
+            return BasicResult.of(map);
+        }
+
         User user = new User();
         user.setEmail(email);
         user.setPhone(phone);
@@ -77,10 +84,10 @@ public class UserController {
         log.info("!!!!api/user  email:{},phone:{},password:{}"
                 ,email,password);
 
-        User user = userDAO.getUserByField(dbName,"email",password);
+        User user = userDAO.getUserByFieldTwo(dbName,"email",email,"password",password);
         if (user==null){
             Map map = new HashMap();
-            map.put("error","用户不存在");
+            map.put("error","用户不存在或密码不正确！");
             return BasicResult.of(map);
         }
 
