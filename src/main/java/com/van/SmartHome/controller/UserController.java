@@ -43,13 +43,13 @@ public class UserController {
 
     ) {
 
-        log.info("!!!!api/user accessToken:{} email:{},phone:{},userName:{}，password:{}"
-                ,email,phone,userName);
+        log.info("!!!!api/user  email:{},phone:{},userName:{}，password:{}"
+                ,email,phone,userName,password);
 
         User userCheck = userDAO.getUserByField(dbName,"email",email);
         if (userCheck!=null){
             Map map = new HashMap();
-            map.put("error","用户已经存在，请直接登录。");
+            map.put("error","用户已经存在，请直接登录");
             return BasicResult.of(map);
         }
 
